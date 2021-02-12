@@ -1,0 +1,36 @@
+.header, .footer {
+    background-color: lightgrey;
+}
+
+ul.footer_logo {
+    list-style-type:none;
+    padding:0;
+    margin:0;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+ul.footer_logo li {
+    display: inline;
+}
+
+thead {
+    background-color:#4CAF50;
+}
+
+.container {
+    overflow: auto;
+    max-width: 100%;
+}
+
+.sidebar--left {
+	width: 20%;
+    float: left;
+}
+
+.example-wrapper {
+	overflow: hidden;
+}
+
+@import "~bootstrap/scss/bootstrap";
+

@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TeamController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <table class="table mx-auto table-striped table-hover">
+        <thead>
+            <tr>
+                <td colspan="5"> 
+                    Nombre d'équipes: {{ teams.getTotalItemCount }}
+                </td>
+            </tr>
+            <tr>
+                <th{% if teams.isSorted('t.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(teams, 'Nom', 't.name') }}</th>
+                <th>Ligue</th>
+                <th>Sport</th>
+                <th>Pays</th>
+                <th></th>
+            </tr>
+            <tr>
+                    {{ form_start(formSearch) }}
+                    <div class="form-row align-items-end">
+                        <div class="col">
+                            <th>{{ form_row(formSearch.name) }}</th>
+                        </div>
+                        <div class="col">
+                            <th>{{ form_row(formSearch.league) }}</th>
+                        </div>
+                        <div class="col">
+                            <th></th>
+                        </div>
+                        <div class="col">
+                            <th></th>
+                        </div>
+                        <div class="col">
+                            <th>
+                                <div class="form-group">
+                                    <button class="btn btn-primary"><span class="fa fa-search" aria-hidden="true"></span></button>
+
+                                    <a href="{{ path('listeteam') }}" class="btn btn-danger">
+                                        <span class="fa fa-eraser" aria-hidden="true"></span>           
+                                    </a>
+                                </div>
+                            </th>
+                        </div>
+                    </div>
+                    {{ form_end(formSearch) }}
+            </tr>
+        </thead>
+
+        <tbody>
+            {% if teams is empty %}
+                <tr>
+                    <td colspan="5" style="text-align:center;">Aucun résultat</td>
+                </tr>
+            {% endif %}
+            {% for team in teams %}
+                <tr>
+                    <td>{{ team.name }}</td>
+                    <td>{{ team.league.name }}</td>
+                    <td>{{ team.league.sport.name }}</th>
+                    <td>{{ team.league.country.name }}<img src="https://www.translatorscafe.com/cafe/images/flags/{{ team.league.country.countryCode }}.gif"/></th>
+                    <td class="form-row align-items-end">
+                        <a href="{{ path('updateteam', {'id' : team.id }) }}" class="btn btn-primary">
+                            <span class="fa fa-edit" aria-hidden="true"></span>           
+                        </a>
+                        <a href="{{ path('deleteteam', {'id' : team.id }) }}" class="btn btn-danger">
+                            <span class="fa fa-remove" aria-hidden="true"></span>            
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div>
+        {{ knp_pagination_render(teams) }}
+    </div>
+
+    <div style="text-align:right;">
+        <a href="{{ path('createteam') }}" class="btn btn-success">
+            <span class="fa fa-plus" aria-hidden="true"></span>           
+        </a>
+
+        <a href="{{ path('importteam') }}" class="btn btn-primary">
+            <span class="fa fa-upload" aria-hidden="true"></span>           
+        </a>
+    </div>
+</div>
+{% endblock %}

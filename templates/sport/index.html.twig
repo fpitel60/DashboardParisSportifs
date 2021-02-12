@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SportController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <table class="table mx-auto table-striped table-hover">
+        <thead>
+            <tr>
+                <td colspan="3"> 
+                    Nombre de sport: {{ sports.getTotalItemCount }}
+                </td>
+            </tr>
+            <tr>
+                <th{% if sports.isSorted('s.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(sports, 'Nom', 's.name') }}</th>
+                <th></th>
+            </tr>
+            <tr>
+                <div class="container">
+                    {{ form_start(formSearch) }}
+                    <div class="form-row align-items-end">
+                        <div class="col">
+                            <th>{{ form_row(formSearch.name) }}</th>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <th><button class="btn btn-primary">Rechercher</button></th>
+                            </div>
+                        </div>
+                    </div>
+                    {{ form_end(formSearch) }}
+                </div>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% if sports is empty %}
+                <tr>
+                    <td colspan="3" style="text-align:center;">Aucun résultat</td>
+                </tr>
+            {% endif %}
+            {% for sport in sports %}
+                <tr>
+                    <td>{{ sport.name }}</td>
+
+                    <td>
+                        <a href="{{ path('updatesport', {'id' : sport.id }) }}" class="btn btn-primary">
+                            <span class="fa fa-edit" aria-hidden="true"></span>            
+                        </a>
+                        <a href="{{ path('deletesport', {'id' : sport.id }) }}" class="btn btn-danger">
+                            <span class="fa fa-remove" aria-hidden="true"></span>           
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div>
+        {{ knp_pagination_render(sports) }}
+    </div>
+
+    <div style="text-align:right;">
+        <a href="{{ path('createsport') }}" class="btn btn-success">
+            <span class="fa fa-plus" aria-hidden="true"></span>           
+        </a>
+
+        <a href="{{ path('importsport') }}" class="btn btn-primary">
+            <span class="fa fa-upload" aria-hidden="true"></span>           
+        </a>
+    </div>
+</div>
+{% endblock %}

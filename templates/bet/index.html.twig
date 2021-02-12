@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BetController!{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    {{ parent() }}
+
+    {# <style>
+        .example-wrapper { margin: 1em auto; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style> #}
+
+    <div class="example-wrapper">
+        <h1>Bonjour {{ username }}</h1>
+
+        <p>Liste de vos paris</p>
+
+        <table class="table mx-auto" border="2">
+            <tr>
+                <th>Date</th>
+                <th>Type paris</th>
+                <th>Résultat</th>
+            </tr>
+
+            <tr>
+                {% if bets is empty %}
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                {% endif %}
+                {% for bet in bets %}
+                    <th>{{ bet.date }}</th>
+                    <th>{{ bet.typeBet }}</th>
+                    <th>{{ bet.resultBet }}</th>
+                {% endfor %}
+            </tr>
+        </table>
+    </div>
+</div>
+{% endblock %}

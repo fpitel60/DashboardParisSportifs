@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TypeHighlightController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <table class="table mx-auto table-striped table-hover">
+        <thead>
+            <tr>
+                <td colspan="5"> 
+                    Nombre de types de faits marquants: {{ typehighlights.getTotalItemCount }}
+                </td>
+            </tr>
+            <tr>
+                <th{% if typehighlights.isSorted('th.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(typehighlights, 'Nom', 'th.name') }}</th>
+                <th>Signe</th>
+                <th>Nombre</th>
+                <th>Sport</th>
+                <th></th>
+            </tr>
+            <tr>
+                    {{ form_start(formSearch) }}
+                    <div class="form-row align-items-end">
+                        <div class="col">
+                            <th>{{ form_row(formSearch.name) }}</th>
+                        </div>
+                        <div class="col">
+                            <th></th>
+                        </div>
+                        <div class="col">
+                            <th></th>
+                        </div>
+                        <div class="col">
+                            <th>{{ form_row(formSearch.sport) }}</th>
+                        </div>
+                        <div class="col">
+                            <th>
+                                <div class="form-group">
+                                    <button class="btn btn-primary"><span class="fa fa-search" aria-hidden="true"></span></button>
+
+                                    <a href="{{ path('listetypehighlight') }}" class="btn btn-danger">
+                                        <span class="fa fa-eraser" aria-hidden="true"></span>           
+                                    </a>
+                                </div>
+                            </th>
+                        </div>
+                    </div>
+                    {{ form_end(formSearch) }}
+            </tr>
+        </thead>
+
+        <tbody>
+            {% if typehighlights is empty %}
+                <tr>
+                    <td colspan="5" style="text-align:center;">Aucun résultat</td>
+                </tr>
+            {% endif %}
+            {% for typehighlight in typehighlights %}
+                <tr>
+                    <td>{{ typehighlight.name }}</td>
+                    <td>{{ typehighlight.sign }}</td>
+                    <td>{{ typehighlight.nombre }}</td>
+                    <td>{{ typehighlight.sport.name }}</td>
+                    <td class="form-row align-items-end">
+                        <a href="{{ path('updatetypehighlight', {'id' : typehighlight.id }) }}" class="btn btn-primary">
+                            <span class="fa fa-edit" aria-hidden="true"></span>           
+                        </a>
+                        <a href="{{ path('deletetypehighlight', {'id' : typehighlight.id }) }}" class="btn btn-danger">
+                            <span class="fa fa-remove" aria-hidden="true"></span>            
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div>
+        {{ knp_pagination_render(typehighlights) }}
+    </div>
+
+    <div style="text-align:right;">
+        <a href="{{ path('createtypehighlight') }}" class="btn btn-success">
+            <span class="fa fa-plus" aria-hidden="true"></span>           
+        </a>
+    </div>
+</div>
+{% endblock %}

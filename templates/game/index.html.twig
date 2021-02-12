@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GameController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <table class="table mx-auto table-striped table-hover">
+        <thead>
+            <tr>
+                <td colspan="5"> 
+                    Nombre de type de matchs: {{ games.getTotalItemCount }}
+                </td>
+            </tr>
+            <tr>
+                <th{% if games.isSorted('g.date') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(games, 'Date', 'g.date') }}</th>
+                <th>Match</th>
+                <th></th>
+                <th>Score</th>
+                <th></th>
+            </tr>
+            <tr>
+                    {{ form_start(formSearch) }}
+                    <div class="form-row align-items-end">
+                        <div class="col">
+                            <th>{{ form_row(formSearch.date) }}</th>
+                        </div>
+                        <div class="col">
+                            <th>{{ form_row(formSearch.homeTeam) }}{{ form_row(formSearch.foreignTeam) }}</th>
+                        </div>
+                        <div class="col">
+                            <th></th>
+                        </div>
+                        <div class="col">
+                            <th></th>
+                        </div>
+                        <div class="col">
+                            <th>
+                                <div class="form-group">
+                                    <button class="btn btn-primary"><span class="fa fa-search" aria-hidden="true"></span></button>
+
+                                    <a href="{{ path('listegame') }}" class="btn btn-danger">
+                                        <span class="fa fa-eraser" aria-hidden="true"></span>           
+                                    </a>
+                                </div>
+                            </th>
+                        </div>
+                    </div>
+                    {{ form_end(formSearch) }}
+            </tr>
+        </thead>
+
+        <tbody>
+            {% if games is empty %}
+                <tr>
+                    <td colspan="5" style="text-align:center;">Aucun résultat</td>
+                </tr>
+            {% endif %}
+            {% for game in games %}
+                <tr>
+                    <td>{{ game.date|date("d-M-y") }}</td>
+                    <td>{{ game.homeTeam.name }} vs {{ game.foreignTeam.name }}</td>
+                    <td></td>
+                    <td>{{ game.score }}</td>
+                    <td class="form-row align-items-end">
+                        <a href="{{ path('choicebet_add', {'id' : game.id }) }}" class="btn btn-success">
+                            <span class="fa fa-plus" aria-hidden="true"></span>            
+                        </a>
+                        <a href="{{ path('updategame', {'id' : game.id }) }}" class="btn btn-primary">
+                            <span class="fa fa-edit" aria-hidden="true"></span>           
+                        </a>
+                        <a href="{{ path('deletegame', {'id' : game.id }) }}" class="btn btn-danger">
+                            <span class="fa fa-remove" aria-hidden="true"></span>            
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div>
+        {{ knp_pagination_render(games) }}
+    </div>
+
+    <div style="text-align:right;">
+        <a href="{{ path('creategame') }}" class="btn btn-success">
+            <span class="fa fa-plus" aria-hidden="true"></span>           
+        </a>
+    </div>
+</div>
+{% endblock %}

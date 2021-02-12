@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+            <link href="{{ asset('styles/app.scss') }}" rel="stylesheet">
+            <link href="{{ asset('build/app.css') }}" rel="stylesheet">
+            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        {% endblock %}
+    </head>
+    <body>
+        {% block header %}
+            <div class="header">
+                <div class="text-center">
+                    <img class="image-display" src="images/img_paris_sportif_header.png" width="70%" height="300"/>
+                </div>
+            </div>
+
+            <div class="text-left">
+                <a href="{{ path('listebet') }}">Liste des paris</a>
+            </div>
+        {% endblock %}
+
+        {% block body %}
+            <div class="sidebar--left">
+                {{ knp_menu_render('main') }}
+            </div>
+        {% endblock %}
+
+        {% block footer %}
+            <div class="footer">
+                <div class="text-center"> 
+                    <ul class="footer_logo">  
+                        <li><a href="https://www.lequipe.fr/" target="_blank"><img class="image-display" src="images/img_logo_lequipe.png" width="30" height="30"/></a></li>
+                        <li><a href="https://www.facebook.com/" target="_blank"><img class="image-display" src="images/img_logo_facebook.png" width="30" height="30"/></a></li>
+                    </ul>
+                </div>
+            </div>
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </body>
+</html>
+

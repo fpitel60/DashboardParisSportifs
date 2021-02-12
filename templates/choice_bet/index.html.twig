@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ChoiceBetController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <table class="table mx-auto table-striped table-hover">
+        <thead>
+            <tr>
+                <td colspan="4"> 
+                    Nombre de paris: {{ bets|length }}
+                </td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <th>Equipe Domicile</th>
+                <th>Equipe Exterieure</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% if bets is empty %}
+                <tr>
+                    <td colspan="4" style="text-align:center;">Aucun paris</td>
+                </tr>
+            {% endif %}
+            {% for bet in bets %}
+                <tr>
+                    <td>{{ bet.game.date|date("d-M-y") }}</td>
+                    <td>{{ bet.game.homeTeam.name }}</td>
+                    <td>{{ bet.game.foreignTeam.name }}</td>
+                    <td class="form-row align-items-end">
+                        <a href="{{ path('choicebet_remove', {'id' : bet.game.id}) }}" class="btn btn-danger">
+                            <span class="fa fa-remove" aria-hidden="true"></span>            
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+

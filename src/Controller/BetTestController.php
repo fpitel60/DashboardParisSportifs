@@ -29,8 +29,27 @@ class BetTestController extends AbstractController
         // Récupère l'utilisateur courant
         $user = $userRepository->findOneBy(array('username' => $username));
 
+        // Calcul le ROI et le ROC
+        $betsTest = $betTestRepository->findByResultBet($user);
+        $gainsCumul = 0;
+        $misesCumul = 0;
+        foreach($betsTest as $bettest) {
+            if($bettest->getResultBet() == 'Valide') {
+                $gainsCumul += ($bettest->getGain());  
+            }
+            $misesCumul += $bettest->getMise();
+        }
+        $user->setMisesCumul($misesCumul);
+        $benefsCumul = $gainsCumul - $misesCumul;
+        $user->setBenefsCumul($benefsCumul);
+        if($misesCumul != 0 && $bettest->getUser()->getCurrentBankroll() != 0) {
+            $user->setRoi(($benefsCumul/$misesCumul)*100);
+            $user->setRoc(($benefsCumul/$user->getStartBankroll())*100);
+        }
+
         return $this->render('bet_test/index.html.twig', array(
-            'bets' => $betTestRepository->findBy(array('user' => $user->getId()))
+            'bets' => $betTestRepository->findBy(array('user' => $user->getId())),
+            'user' => $user
         ));
     }
 
@@ -57,6 +76,7 @@ class BetTestController extends AbstractController
             $user = $userRepository->findOneBy(array('username' => $username));
             $betTest->setUser($user);
 
+            // Calcul la cote du bet à partir de chaque match
             $games = $betTest->getGamesTest();
             $cote = 1;
             foreach($games as $game) {
@@ -64,6 +84,8 @@ class BetTestController extends AbstractController
                 $game->setBetTest($betTest);
             }
             $betTest->setCote($cote);
+
+            $user->setCurrentBankroll($user->getCurrentBankroll()-$betTest->getMise());
             
             $em->persist($betTest);
             $em->flush();
@@ -78,9 +100,15 @@ class BetTestController extends AbstractController
      */
     public function update(Request $request, $id): Response
     {
+        $session = $request->getSession();
+        $username = $session->get(Security::LAST_USERNAME);
+
         $em = $this->getDoctrine()->getManager();
         $betTestRepository = $em->getRepository(BetTest::class);
         $betTest = $betTestRepository->find($id);
+
+        $userRepository = $em->getRepository(User::class);
+        $user = $userRepository->findOneBy(array('username' => $username));
 
         $formBetTest = $this->createForm(BetTestType::class, $betTest);
 
@@ -89,11 +117,13 @@ class BetTestController extends AbstractController
         $formBetTest->handleRequest($request);
 
         if($request->isMethod('post') && $formBetTest->isValid()) {
+            // Calcul du gain en fonction du resultat du paris (Gagné/Perdu)
             if($betTest->getResultBet() == null) {
                 $betTest->setGain(null);
             }
             elseif($betTest->getResultBet() == "Valide") {
                 $betTest->setGain($betTest->getCote()*$betTest->getMise());
+                $user->setCurrentBankroll($user->getCurrentBankroll()+$betTest->getGain());
             }
             else {
                 $betTest->setGain(0);

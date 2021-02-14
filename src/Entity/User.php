@@ -46,6 +46,36 @@ class User implements UserInterface
     private $lastName;
 
     /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $benefsCumul;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $misesCumul;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $roi;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $startBankroll;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $currentBankroll;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $roc;
+
+    /**
     * @ORM\OneToMany(targetEntity=Bet::class, cascade={"persist", "remove"}, mappedBy="user")
     */
     protected $bets;
@@ -154,6 +184,78 @@ class User implements UserInterface
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getBenefsCumul(): ?float
+    {
+        return $this->benefsCumul;
+    }
+
+    public function setBenefsCumul(float $benefsCumul): self
+    {
+        $this->benefsCumul = $benefsCumul;
+
+        return $this;
+    }
+
+    public function getMisesCumul(): ?float
+    {
+        return $this->misesCumul;
+    }
+
+    public function setMisesCumul(float $misesCumul): self
+    {
+        $this->misesCumul = $misesCumul;
+
+        return $this;
+    }
+
+    public function getRoi(): ?float
+    {
+        return $this->roi;
+    }
+
+    public function setRoi(float $roi): self
+    {
+        $this->roi = $roi;
+
+        return $this;
+    }
+
+    public function getCurrentBankroll(): ?float
+    {
+        return $this->currentBankroll;
+    }
+
+    public function setCurrentBankroll(float $currentBankroll): self
+    {
+        $this->currentBankroll = $currentBankroll;
+
+        return $this;
+    }
+
+    public function getStartBankroll(): ?float
+    {
+        return $this->startBankroll;
+    }
+
+    public function setStartBankroll(float $startBankroll): self
+    {
+        $this->startBankroll = $startBankroll;
+
+        return $this;
+    }
+
+    public function getRoc(): ?float
+    {
+        return $this->roc;
+    }
+
+    public function setRoc(float $roc): self
+    {
+        $this->roc = $roc;
 
         return $this;
     }

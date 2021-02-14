@@ -9,6 +9,14 @@
 </style>
 
 <div class="example-wrapper">
+    <div class="sidebar" style="text-align:right">
+        <a>Bankeroll : {{ user.currentBankroll }}</a>
+    </div>
+    <div class="sidebar">
+        <a>Votre ROI est de : {% if user.roi == null %}0{% else %}{{ user.roi }} {% endif %}%</a>
+        <a>Votre ROC est de : {% if user.roc == null %}0{% else %}{{ user.roc }} {% endif %}%</a>
+    </div>
+
     <table class="table mx-auto table-striped table-hover">
         <thead>
             <tr>
@@ -38,9 +46,17 @@
                     <td>{{ bet.cote }}</td>
                     <td>{{ bet.mise }}</td>
                     <td>{{ bet.gain }}</td>
-                    <td>{{ bet.resultbet }}</td>
+                    <td>
+                    {% if bet.resultBet == "Valide" %}
+                        <span class="fa fa-arrow-circle-up" aria-hidden="true" style="color: green"></span> 
+                    {% elseif bet.resultBet == "Perdu" %}
+                        <span class="fa fa-arrow-circle-down" aria-hidden="true" style="color: red"></span> 
+                    {% endif %}    
+                    </td>
                     <td class="form-row align-items-end">
-                        Afficher les choix du paris
+                        <a href="{{ path('showgametestbettest', {'id' : bet.id}) }}" class="btn btn-primary">
+                            <span class="fa fa-eye" aria-hidden="true"></span> 
+                        </a>
                         <a href="{{ path('updatebettest', {'id' : bet.id }) }}" class="btn btn-primary">
                             <span class="fa fa-edit" aria-hidden="true"></span>           
                         </a>

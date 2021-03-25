@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\User;
 use App\Entity\BetTest;
 use Doctrine\ORM\Query;
+use App\Entity\Bankroll;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -22,7 +23,7 @@ class BetTestRepository extends ServiceEntityRepository
         parent::__construct($registry, BetTest::class);
     }
 
-    public function findByResultBet(User $user)
+    public function findByResultBet(Bankroll $bankroll)
     {
         $query = $this->findAllVisible();
         
@@ -30,8 +31,54 @@ class BetTestRepository extends ServiceEntityRepository
         ->setParameter('resultBetV', 'Valide')
         ->orWhere('bt.resultBet = :resultBetP')
         ->setParameter('resultBetP', 'Perdu')
-        ->andWhere('bt.user = :user')
-        ->setParameter('user', $user->getId());
+        ->andWhere('bt.bankroll = :bankroll')
+        ->setParameter('bankroll', $bankroll->getId());
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function countByDate(Bankroll $bankroll) {
+        $query = $this->findAllVisible();
+
+        $query = $query->select('COUNT(bt) as count, SUBSTRING(bt.date, 1, 10) as dateBets')
+        ->orWhere('bt.resultBet = :resultBetV')
+        ->setParameter('resultBetV', 'Valide')
+        ->orWhere('bt.resultBet = :resultBetP')
+        ->setParameter('resultBetP', 'Perdu')
+        ->andWhere('bt.bankroll = :bankroll')
+        ->setParameter('bankroll', $bankroll->getId())
+        ->groupBy('dateBets')
+        ->orderBy('dateBets', 'ASC');
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function countByDateByResult(Bankroll $bankroll, string $resultBet) {
+        $query = $this->findAllVisible();
+
+        $query = $query->select('COUNT(bt) as count, SUBSTRING(bt.date, 1, 10) as dateBets, bt.resultBet')
+        ->orWhere('bt.resultBet = :resultBet')
+        ->setParameter('resultBet', $resultBet)
+        ->andWhere('bt.bankroll = :bankroll')
+        ->setParameter('bankroll', $bankroll->getId())
+        ->groupBy('dateBets')
+        ->addGroupBy('bt.resultBet')
+        ->orderBy('dateBets', 'ASC');
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function findBetsTestByDateByResult(Bankroll $bankroll, $date) {
+        $query = $this->findAllVisible();
+
+        $query = $query->orWhere('bt.resultBet = :resultBetV')
+        ->setParameter('resultBetV', 'Valide')
+        ->orWhere('bt.resultBet = :resultBetP')
+        ->setParameter('resultBetP', 'Perdu')
+        ->andWhere('bt.bankroll = :bankroll')
+        ->setParameter('bankroll', $bankroll->getId())
+        ->andWhere('SUBSTRING(bt.date, 1, 10) = :date')
+        ->setParameter('date', $date);
 
         return $query->getQuery()->getResult();
     }

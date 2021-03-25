@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <canvas id="statsWinLoose" width="400" height="100" data-result-count='{{ betsTestResultCount|raw }}'></canvas>
+    <canvas id="statsCountByDate" width="400" height="100" data-dates='{{ dates|raw }}' data-count-win='{{ countWin|raw }}' data-count-loose='{{ countLoose|raw }}'></canvas>
+    <canvas id="statsBenefPerteByDate" width="400" height="100" data-dates='{{ dates|raw }}' data-benef-perte='{{ benefPerte|raw }}'></canvas>
+    <canvas id="statsBankrollByDate" width="400" height="100" data-dates='{{ dates|raw }}' data-bankroll-date='{{ bankrollByDate|raw }}'></canvas> 
+</div>
+{% endblock %}

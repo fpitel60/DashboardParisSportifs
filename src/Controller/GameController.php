@@ -7,6 +7,8 @@ use App\Entity\Sport;
 use App\Form\GameType;
 use App\Entity\GameSearch;
 use App\Form\GameSearchType;
+use App\Entity\TypeBetHighlight;
+use App\Entity\TypeByBetHighlight;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -122,7 +124,7 @@ class GameController extends AbstractController
     public function delete(Request $request, $id): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $gameRepository = $em->getRepository((Game::class));
+        $gameRepository = $em->getRepository(Game::class);
         $game = $gameRepository->find($id);
 
         $em->remove($game);
@@ -131,5 +133,23 @@ class GameController extends AbstractController
         $this->addFlash('message', 'Match supprimé');
 
         return $this->redirect($this->generateUrl('listegame'));
+    }
+
+     /**
+      * @Route("/game/choicebet/{id}", name="gamechoicebet")
+      */
+    public function choiceBet($id): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $gameRepository = $em->getRepository(Game::class);
+        $typeBetHighlightRepository = $em->getRepository(TypeBetHighlight::class);
+        $typeByBetHighlightRepository = $em->getRepository(TypeByBetHighlight::class);
+
+        $game = $gameRepository->find($id);
+        $sport = $game->getLeague()->getSport();
+
+        $typesByBetHighlightBySport = $typeByBetHighlightRepository->findBySport($sport);
+
+        return $this->render("game/choice_bet.html.twig", array('choices' => $typesByBetHighlightBySport));
     }
 }

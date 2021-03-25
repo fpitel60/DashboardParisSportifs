@@ -19,8 +19,7 @@ class GameTestType extends AbstractType
             ->add('date', DateType::class, array(
                 'label' => 'Date',
                 "widget" => 'single_text',
-                "format" => 'yyyy-MM-dd',
-                "data" => new \DateTime()
+                "format" => 'yyyy-MM-dd'
             ))
             ->add('name', TextType::class, array('label' => 'Game', 'required' => true))
             ->add('choix', TextType::class, array('label' => 'Choix du paris', 'required' => true))
@@ -29,9 +28,10 @@ class GameTestType extends AbstractType
                 'choices' => [
                     'Valide' => 'Valide',
                     'Perdu' => 'Perdu',
+                    'Annulé' => 'Annulé'
                 ],
                 'required' => false,
-                'label' => 'Validé/Perdu'
+                'label' => 'Validé/Perdu/Annulé'
             ))
         ;
     }

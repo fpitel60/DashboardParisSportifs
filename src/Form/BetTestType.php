@@ -20,7 +20,8 @@ class BetTestType extends AbstractType
             ->add('date', DateType::class, array(
                 'label' => 'Date',
                 "widget" => 'single_text',
-                "format" => 'yyyy-MM-dd',
+                "format" => 'yyyy-MM-dd HH:mm',
+                'html5' => false,
                 "data" => new \DateTime()
             ))
             ->add('mise', NumberType::class, array('label' => 'Mise', 'required' => true))
@@ -28,9 +29,10 @@ class BetTestType extends AbstractType
                 'choices' => [
                     'Valide' => 'Valide',
                     'Perdu' => 'Perdu',
+                    'Annulé' => 'Annulé',
                 ],
                 'required' => false,
-                'label' => 'Validé/Perdu'
+                'label' => 'Validé/Perdu/Annulé'
             ))
             ->add('gamestest', CollectionType::class, array(
                 'entry_type' => GameTestType::class,

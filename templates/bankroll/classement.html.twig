@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BankrollController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+
+    <table class="table mx-auto table-striped table-hover">
+        <thead>
+            <tr>
+                <td colspan="6"> 
+                    Nombre de bankrolls partagées : {{ bankrolls|length }}
+                </td>
+            </tr>
+            <tr>
+                <th>Pseudo</th>
+                <th>Nombre de paris</th>
+                <th>ROI</th>
+                <th>ROC</th>
+                <th>Bénéfices/Pertes</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% if bankrolls is empty %}
+                <tr>
+                    <td colspan="6" style="text-align:center;">Aucun résultat</td>
+                </tr>
+            {% endif %}
+            {% for bankroll in bankrolls %}
+                <tr>
+                    <td>{{ bankroll.user.username }}</td>
+                    <td>#</td>
+                    <td>{{ bankroll.roi }}</td>
+                    <td>{{ bankroll.roc }}</td>
+                    <td>{{ bankroll.benefsCumul }}</td>
+                    <td class="form-row align-items-end">
+                        
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div>
+        {{ knp_pagination_render(bankrolls) }}
+    </div>
+</div>
+{% endblock %}

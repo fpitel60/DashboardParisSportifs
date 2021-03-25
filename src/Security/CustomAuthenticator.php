@@ -97,8 +97,20 @@ class CustomAuthenticator extends AbstractFormLoginAuthenticator implements Pass
             return new RedirectResponse($targetPath);
         }
 
+        $credentials = $this->getCredentials($request);
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
+
+        if($user->getDefaultBankroll() == null)
+        {
+            return new RedirectResponse($this->urlGenerator->generate('bankroll_create'));
+        }
+
+        $session = $request->getSession();
+        $session->set('defaultBankrollId', $user->getDefaultBankroll()->getId());
+        $session->set('currentBankrollId', $user->getDefaultBankroll()->getId());
+
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        return new RedirectResponse($this->urlGenerator->generate('listebet'));
+        return new RedirectResponse($this->urlGenerator->generate('listebettest'));
     }
 
     protected function getLoginUrl()

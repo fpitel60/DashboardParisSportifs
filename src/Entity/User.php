@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use phpDocumentor\Reflection\Types\Boolean;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -46,49 +47,24 @@ class User implements UserInterface
     private $lastName;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $benefsCumul;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $misesCumul;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $roi;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $startBankroll;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $currentBankroll;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $roc;
-
-    /**
     * @ORM\OneToMany(targetEntity=Bet::class, cascade={"persist", "remove"}, mappedBy="user")
     */
     protected $bets;
 
     /**
-    * @ORM\OneToMany(targetEntity=BetTest::class, cascade={"persist", "remove"}, mappedBy="user")
+    * @ORM\OneToMany(targetEntity=Bankroll::class, cascade={"persist", "remove"}, mappedBy="user")
     */
-    protected $betstest;
+    protected $bankrolls;
+
+    /**
+    * @ORM\OneToOne(targetEntity=Bankroll::class)
+    */
+    protected $defaultBankroll;
 
     public function __construct()
     {
         $this->bets = new ArrayCollection();
-        $this->betstest = new ArrayCollection();
+        $this->bankrolls = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -188,78 +164,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getBenefsCumul(): ?float
-    {
-        return $this->benefsCumul;
-    }
-
-    public function setBenefsCumul(float $benefsCumul): self
-    {
-        $this->benefsCumul = $benefsCumul;
-
-        return $this;
-    }
-
-    public function getMisesCumul(): ?float
-    {
-        return $this->misesCumul;
-    }
-
-    public function setMisesCumul(float $misesCumul): self
-    {
-        $this->misesCumul = $misesCumul;
-
-        return $this;
-    }
-
-    public function getRoi(): ?float
-    {
-        return $this->roi;
-    }
-
-    public function setRoi(float $roi): self
-    {
-        $this->roi = $roi;
-
-        return $this;
-    }
-
-    public function getCurrentBankroll(): ?float
-    {
-        return $this->currentBankroll;
-    }
-
-    public function setCurrentBankroll(float $currentBankroll): self
-    {
-        $this->currentBankroll = $currentBankroll;
-
-        return $this;
-    }
-
-    public function getStartBankroll(): ?float
-    {
-        return $this->startBankroll;
-    }
-
-    public function setStartBankroll(float $startBankroll): self
-    {
-        $this->startBankroll = $startBankroll;
-
-        return $this;
-    }
-
-    public function getRoc(): ?float
-    {
-        return $this->roc;
-    }
-
-    public function setRoc(float $roc): self
-    {
-        $this->roc = $roc;
-
-        return $this;
-    }
-
     public function getBets()
     {
         return $this->bets;
@@ -271,14 +175,26 @@ class User implements UserInterface
         $bet->setUser($this);
     }
 
-    public function getBetsTest()
+    public function getBankrolls()
     {
-        return $this->betstest;
+        return $this->bankrolls;
     }
      
-    public function addBetTest(Bet $bettest)
+    public function addBankroll(Bankroll $bankroll)
     {
-        $this->betstest->add($bettest);
-        $bettest->setUser($this);
+        $this->bankrolls->add($bankroll);
+        $bankroll->setUser($this);
+    }
+
+    public function getDefaultBankroll()
+    {
+        return $this->defaultBankroll;
+    }
+
+    public function setDefaultBankroll(Bankroll $defaultBankroll): self
+    {
+        $this->defaultBankroll = $defaultBankroll;
+
+        return $this;
     }
 }

@@ -18,8 +18,8 @@
             </tr>
             <tr>
                 <th>Date</th>
-                <th>Equipe Domicile</th>
-                <th>Equipe Exterieure</th>
+                <th>Match</th>
+                <th></th>
                 <th></th>
             </tr>
         </thead>
@@ -32,9 +32,9 @@
             {% endif %}
             {% for bet in bets %}
                 <tr>
-                    <td>{{ bet.game.date|date("d-M-y") }}</td>
-                    <td>{{ bet.game.homeTeam.name }}</td>
-                    <td>{{ bet.game.foreignTeam.name }}</td>
+                    <td>{{ bet.game.date|date("d-M-y H:m:s") }}</td>
+                    <td>{{ bet.game.homeTeam.name }}-{{ bet.game.foreignTeam.name }}</td>
+                    <td></td>
                     <td class="form-row align-items-end">
                         <a href="{{ path('choicebet_remove', {'id' : bet.game.id}) }}" class="btn btn-danger">
                             <span class="fa fa-remove" aria-hidden="true"></span>            

@@ -13,6 +13,8 @@ import './bootstrap';
 
 //import "~bootstrap/scss/bootstrap";
 
+import Chart from 'chart.js';
+
 const $ = require('jquery');
 
 $(".custom-file-input").on("change", function() {
@@ -82,3 +84,134 @@ $(document).ready(function() {
     }
 })
 
+var ctx = document.querySelector('#statsWinLoose');
+var resultCount = ctx.dataset.resultCount;
+var data = JSON.parse(resultCount);
+var myChart1 = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: ["Gagnés", "Perdus"],
+        datasets: [{
+            label: "Gagné/Perdu",
+            data: data,
+            backgroundColor: ['rgba(42, 175, 40, 0.5)', "red"]
+        }]
+    },
+    options: {
+        responsive : true,
+        title: {
+            display: true,
+            text: 'Répartition des paris gagnés et perdus'
+          }
+    }
+}); 
+
+var ctx = document.querySelector('#statsCountByDate');
+var countWin = ctx.dataset.countWin;
+var countLoose = ctx.dataset.countLoose;
+var dates = ctx.dataset.dates;
+var dataCountWin = JSON.parse(countWin);
+var dataCountLoose = JSON.parse(countLoose);
+var dataDates = JSON.parse(dates);
+var myChart2 = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: dataDates,
+        datasets: [
+            {
+                label: "Paris gagnants",
+                data: dataCountWin,
+                backgroundColor: "green"
+            }, {
+                label: "Paris perdus",
+                data: dataCountLoose,
+                backgroundColor: "red"
+            }
+        ]
+    },
+    options: {
+        responsive : true,
+        legend: { display: false },
+        title: {
+            display: true,
+            text: 'Nombre de paris Gagné/Perdu par date'
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+}); 
+
+var ctx = document.querySelector('#statsBenefPerteByDate');
+var benefPerte = ctx.dataset.benefPerte;
+var dates = ctx.dataset.dates;
+var databenefPerte = JSON.parse(benefPerte);
+var dataDates = JSON.parse(dates);
+var myColors=[];
+var labels=[];
+
+$.each(databenefPerte, function( index,value ) {
+  if(value<0){
+  	myColors[index]='red';
+    labels[index]='Pertes'
+  }else{
+  	myColors[index]='green';
+    labels[index]='Bénéfices'
+  }
+});
+
+var myChart3 = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: dataDates,
+        datasets: [
+            {
+                label: labels,
+                borderColor: myColors,
+                borderWidth: 3,
+                fill: false,
+                data: databenefPerte
+            }
+        ]
+    },
+    options: {
+        responsive : true,
+        legend: { display: false },
+        title: {
+            display: true,
+            text: 'Bénéfices/Pertes par date'
+        }
+    }
+}); 
+
+var ctx = document.querySelector('#statsBankrollByDate');
+var bankrollByDate = ctx.dataset.bankrollDate;
+var dates = ctx.dataset.dates;
+var dataBankrollByDate = JSON.parse(bankrollByDate);
+var dataDates = JSON.parse(dates);
+var myChart4 = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: dataDates,
+        datasets: [
+            {
+                label: 'Bankroll',
+                borderColor: 'red',
+                fill: false,
+                data: dataBankrollByDate
+            }
+        ]
+    },
+    options: {
+        responsive : true,
+        legend: { display: false },
+        title: {
+            display: true,
+            text: 'Evolution de la bankroll'
+        }
+    }
+}); 

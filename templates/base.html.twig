@@ -14,12 +14,16 @@
         {% block header %}
             <div class="header">
                 <div class="text-center">
-                    <img class="image-display" src="images/img_paris_sportif_header.png" width="70%" height="300"/>
+                    <img class="image-display" src="{{ asset('images/img_paris_sportif_header.png') }}" width="70%" height="300"/>
                 </div>
             </div>
 
             <div class="text-left">
-                <a href="{{ path('listebet') }}">Liste des paris</a>
+                <a href="{{ path('bankroll') }}">Vos bankrolls</a>
+                <a href="{{ path('listebettest') }}">Liste des paris</a>
+                <a href="{{ path('userstats') }}">Vos stats</a>
+                <a href="{{ path('listemontante') }}">Vos montantes</a>
+                <a href="{{ path('bankroll_classement') }}">Classement</a>
             </div>
         {% endblock %}
 
@@ -33,8 +37,8 @@
             <div class="footer">
                 <div class="text-center"> 
                     <ul class="footer_logo">  
-                        <li><a href="https://www.lequipe.fr/" target="_blank"><img class="image-display" src="images/img_logo_lequipe.png" width="30" height="30"/></a></li>
-                        <li><a href="https://www.facebook.com/" target="_blank"><img class="image-display" src="images/img_logo_facebook.png" width="30" height="30"/></a></li>
+                        <li><a href="https://www.lequipe.fr/" target="_blank"><img class="image-display" src="{{ asset('images/img_logo_lequipe.png') }}" width="30" height="30"/></a></li>
+                        <li><a href="https://www.facebook.com/" target="_blank"><img class="image-display" src="{{ asset('images/img_logo_facebook.png') }}" width="30" height="30"/></a></li>
                     </ul>
                 </div>
             </div>

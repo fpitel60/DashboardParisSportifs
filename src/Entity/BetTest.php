@@ -20,7 +20,7 @@ class BetTest
     private $id;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $date;
 
@@ -30,29 +30,35 @@ class BetTest
     private $resultBet;
 
     /**
-     * @ORM\Column(type="float", length=255, nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $cote;
 
     /**
-     * @ORM\Column(type="float", length=255, nullable=false)
+     * @ORM\Column(type="float", nullable=false)
      */
     private $mise;
 
     /**
-     * @ORM\Column(type="float", length=255, nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $gain;
 
     /**
-    * @ORM\ManyToOne(targetEntity=User::class, inversedBy="betstest")
+    * @ORM\ManyToOne(targetEntity=Bankroll::class, inversedBy="betstest")
     */
-    protected $user;
+    protected $bankroll;
 
     /**
     * @ORM\OneToMany(targetEntity=GameTest::class, cascade={"persist", "remove"}, mappedBy="bettest")
     */
     protected $gamestest;
+
+    /**
+    * @ORM\OneToOne(targetEntity=PalierMontante::class, cascade={"persist", "remove"}, inversedBy="betTest")
+    * @ORM\JoinColumn(name="palier_montante_id", referencedColumnName="id", nullable=true)
+    */
+    protected $palierMontante;
 
     public function __construct()
     {
@@ -117,21 +123,21 @@ class BetTest
         return $this->gain;
     }
 
-    public function setGain(float $gain): self
+    public function setGain($gain): self
     {
         $this->gain = $gain;
 
         return $this;
     }
 
-    public function getUser()
+    public function getBankroll()
     {
-        return $this->user;
+        return $this->bankroll;
     }
  
-    public function setUser($user)
+    public function setBankroll($bankroll)
     {
-        $this->user = $user;
+        $this->bankroll = $bankroll;
  
         return $this;
     }
@@ -147,13 +153,25 @@ class BetTest
         return $this;
     }
      
-    public function addGames(GameTest $gametest)
+    public function addGame(GameTest $gametest)
     {
         if (!$this->gamestest->contains($gametest)) {
             $this->gamestest[] = $gametest;
             $gametest->setBetTest($this);
         }
 
+        return $this;
+    }
+
+    public function getPalierMontante()
+    {
+        return $this->palierMontante;
+    }
+ 
+    public function setPalierMontante($palierMontante)
+    {
+        $this->palierMontante = $palierMontante;
+ 
         return $this;
     }
 }

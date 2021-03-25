@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BetTestController!{% endblock %}
+{% block title %}Hello MontanteController!{% endblock %}
 
 {% block body %}
 <style>
@@ -10,59 +10,57 @@
 
 <div class="example-wrapper">
     <div class="sidebar" style="text-align:right">
-        <a>Bankeroll {{ currentBankroll.name }} : {{ currentBankroll.currentBankroll }}</a>
-    </div>
-    <div class="sidebar">
-        <a>Votre ROI est de : {% if currentBankroll.roi == null %}0{% else %}{{ currentBankroll.roi }} {% endif %}%</a>
-        <a>Votre ROC est de : {% if currentBankroll.roc == null %}0{% else %}{{ currentBankroll.roc }} {% endif %}%</a>
+        <a>Bankeroll {{ currentBankroll.name }}: {{ currentBankroll.currentBankroll }}</a>
     </div>
 
     <table class="table mx-auto table-striped table-hover">
         <thead>
             <tr>
-                <td colspan="6"> 
-                    Nombre de paris : {{ bets|length }}
+                <td colspan="8"> 
+                    Nombre de montantes : {{ montantes|length }}
                 </td>
             </tr>
             <tr>
-                <th>Date</th>
-                <th>Cote</th>
-                <th>Mise</th>
+                <th>Début de la montante</th>
+                <th>Nombre de paliers</th>
+                <th>Mise de départ</th>
+                <th>Objectif</th>
+                <th>Résultat de la montante</th>
                 <th>Gain</th>
-                <th>Résultat du paris</th>
                 <th></th>
             </tr>
         </thead>
 
         <tbody>
-            {% if bets is empty %}
+            {% if montantes is empty %}
                 <tr>
-                    <td colspan="6" style="text-align:center;">Aucun résultat</td>
+                    <td colspan="8" style="text-align:center;">Aucun résultat</td>
                 </tr>
             {% endif %}
-            {% for bet in bets %}
+            {% for montante in montantes %}
                 <tr>
-                    <td>{{ bet.date|date("d-M-y") }}</td>
-                    <td>{{ bet.cote }}</td>
-                    <td>{{ bet.mise }}</td>
-                    <td>{{ bet.gain }}</td>
+                    <td>{{ montante.dateStart|date("d-M-y") }}</td>
+                    <td>{{ montante.nbPalier }}</td>
+                    <td>{{ montante.miseStart }}</td>
+                    <td>{{ montante.objectif }}</td>
                     <td>
-                    {% if bet.resultBet == "Valide" %}
+                    {% if montante.resultMontante == "Valide" %}
                         <span class="fa fa-arrow-circle-up" aria-hidden="true" style="color: green"></span> 
-                    {% elseif bet.resultBet == "Perdu" %}
+                    {% elseif montante.resultMontante == "Perdu" %}
                         <span class="fa fa-arrow-circle-down" aria-hidden="true" style="color: red"></span> 
-                    {% elseif bet.resultBet == "Annulé" %}    
+                    {% elseif montante.resultMontante == "Annulé" %}    
                         <span class="fa fa-times-circle" aria-hidden="true" style="color: grey"></span>
                     {% endif %}
                     </td>
+                    <td>{{ montante.gain }}</td>
                     <td class="form-row align-items-end">
-                        <a href="{{ path('showgametestbettest', {'id' : bet.id}) }}" class="btn btn-primary">
+                        <a href="{{ path('showmontante', {'id' : montante.id}) }}" class="btn btn-primary">
                             <span class="fa fa-eye" aria-hidden="true"></span> 
                         </a>
-                        <a href="{{ path('updatebettest', {'id' : bet.id }) }}" class="btn btn-primary">
+                        <a href="#" class="btn btn-primary">
                             <span class="fa fa-edit" aria-hidden="true"></span>           
                         </a>
-                        <a href="{{ path('deletebettest', {'id' : bet.id }) }}" class="btn btn-danger">
+                        <a href="#" class="btn btn-danger">
                             <span class="fa fa-remove" aria-hidden="true"></span>           
                         </a>
                     </td>
@@ -72,11 +70,11 @@
     </table>
 
     <div>
-        {{ knp_pagination_render(bets) }}
+        {{ knp_pagination_render(montantes) }}
     </div>
 
     <div style="text-align:right;">
-        <a href="{{ path('createbettest') }}" class="btn btn-success">
+        <a href="{{ path('createmontante') }}" class="btn btn-success">
             <span class="fa fa-plus" aria-hidden="true"></span>           
         </a>
     </div>

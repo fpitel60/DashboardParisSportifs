@@ -13,7 +13,7 @@
         <thead>
             <tr>
                 <td colspan="5"> 
-                    Nombre de type de matchs: {{ games.getTotalItemCount }}
+                    Nombre de matchs: {{ games.getTotalItemCount }}
                 </td>
             </tr>
             <tr>
@@ -62,8 +62,8 @@
             {% endif %}
             {% for game in games %}
                 <tr>
-                    <td>{{ game.date|date("d-M-y") }}</td>
-                    <td>{{ game.homeTeam.name }} vs {{ game.foreignTeam.name }}</td>
+                    <td>{{ game.date|date("d-M-y H:m:s") }}</td>
+                    <td>{{ game.homeTeam.name }}-{{ game.foreignTeam.name }}</td>
                     <td></td>
                     <td>{{ game.score }}</td>
                     <td class="form-row align-items-end">
@@ -76,6 +76,9 @@
                         <a href="{{ path('deletegame', {'id' : game.id }) }}" class="btn btn-danger">
                             <span class="fa fa-remove" aria-hidden="true"></span>            
                         </a>
+                        {#<a href="{{ path('gamechoicebet', {'id' : game.id }) }}" class="btn">
+                            <span class="fa fa-chevron-right" aria-hidden="true"></span>            
+                        </a>#}
                     </td>
                 </tr>
             {% endfor %}

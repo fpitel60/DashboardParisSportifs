@@ -5,42 +5,96 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
-            <link href="{{ asset('styles/app.scss') }}" rel="stylesheet">
-            <link href="{{ asset('build/app.css') }}" rel="stylesheet">
+            {#<link href="{{ asset('styles/app.scss') }}" rel="stylesheet">
+            <link href="{{ asset('build/app.css') }}" rel="stylesheet">#}
             <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
         {% endblock %}
     </head>
     <body>
         {% block header %}
-            <div class="header">
-                <div class="text-center">
-                    <img class="image-display" src="{{ asset('images/img_paris_sportif_header.png') }}" width="70%" height="300"/>
-                </div>
-            </div>
+            <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+                <a class="navbar-brand" href="#">Dashboard Paris</a>
+                <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fa fa-bars"></i></button>
+                
+                <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"></div>
 
-            <div class="text-left">
-                <a href="{{ path('bankroll') }}">Vos bankrolls</a>
-                <a href="{{ path('listebettest') }}">Liste des paris</a>
-                <a href="{{ path('userstats') }}">Vos stats</a>
-                <a href="{{ path('listemontante') }}">Vos montantes</a>
-                <a href="{{ path('bankroll_classement') }}">Classement</a>
-            </div>
+                <!-- Navbar-->
+                <ul class="navbar-nav ml-auto ml-md-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user fa-fw"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#">Settings</a>
+                            <a class="dropdown-item" href="#">Activity Log</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
         {% endblock %}
 
         {% block body %}
-            <div class="sidebar--left">
-                {{ knp_menu_render('main') }}
-            </div>
-        {% endblock %}
+            <div id="layoutSidenav">
+                <div id="layoutSidenav_nav">
+                    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                        <div class="sb-sidenav-menu">
+                            <div class="nav">
+                                <div class="sb-sidenav-menu-heading">Gestion</div>
+                                <a class="nav-link" href="{{ path('bankroll') }}">
+                                    <div class="sb-nav-link-icon"><i class="fa fa-dollar-sign"></i></div>
+                                    Vos bankrolls
+                                </a>
 
-        {% block footer %}
-            <div class="footer">
-                <div class="text-center"> 
-                    <ul class="footer_logo">  
-                        <li><a href="https://www.lequipe.fr/" target="_blank"><img class="image-display" src="{{ asset('images/img_logo_lequipe.png') }}" width="30" height="30"/></a></li>
-                        <li><a href="https://www.facebook.com/" target="_blank"><img class="image-display" src="{{ asset('images/img_logo_facebook.png') }}" width="30" height="30"/></a></li>
-                    </ul>
+                                <a class="nav-link" href="{{ path('listebettest') }}">
+                                    <div class="sb-nav-link-icon"><i class="fa fa-table"></i></div>
+                                    Liste des paris
+                                </a>
+
+                                <a class="nav-link" href="{{ path('userstats') }}">
+                                    <div class="sb-nav-link-icon"><i class="fa fa-chart-area"></i></div>
+                                    Vos stats
+                                </a>
+
+                                <a class="nav-link" href="{{ path('listemontante') }}">
+                                    <div class="sb-nav-link-icon"><i class="fa fa-sort-amount-up"></i></div>
+                                    Vos montantes
+                                </a>
+
+                                <div class="sb-sidenav-menu-heading">Tipsters</div>
+                                <a class="nav-link" href="{{ path('bankroll_classement') }}">
+                                    <div class="sb-nav-link-icon"><i class="fa fa-trophy"></i></div>
+                                    Classement
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="sb-sidenav-footer">
+                            <div class="small">Logged in as:</div>
+                                {{ app.user.username }}
+                        </div>
+                    </nav>
                 </div>
+                <div id="layoutSidenav_content">
+                    {% block content %}{% endblock %}
+
+                    <footer class="py-4 bg-light mt-auto">
+                        <div class="container-fluid">
+                            <div class="d-flex align-items-center justify-content-between small">
+                                <div class="text-muted">Copyright &copy; Your Website 2020</div>
+                                <div>
+                                    <a href="https://www.lequipe.fr/" target="_blank"><img class="image-display" src="{{ asset('images/img_logo_lequipe.png') }}" width="30" height="30"/></a>
+                                </div>
+                                <div>
+                                    <a href="#">Privacy Policy</a>
+                                    &middot;
+                                    <a href="#">Terms &amp; Conditions</a>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            
+                {{ knp_menu_render('main') }}
             </div>
         {% endblock %}
 

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BookmakerController!{% endblock %}
+
+{% block content %}
+<div class="headline">
+    <h1 class="mt-4">Bookmaker</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="{{ path('bookmaker') }}">Bookmaker</a></li>
+            <li class="breadcrumb-item active">Create</li>
+        </ol>
+
+    <div class="inner">
+        <p>Création d'un nouveau bookmaker.</p>
+    </div>
+</div>
+
+<main>
+    <div class="container-fluid">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-align-justify mr-1"></i>
+                    Bookmaker create
+            </div>
+
+            <div class="card-body">
+                {{ form(my_form) }}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

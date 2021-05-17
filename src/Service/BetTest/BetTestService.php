@@ -54,12 +54,33 @@ class BetTestService {
     public function getBetsTestOrderByDate() {
         $bankroll = $this->getCurrentBankroll();
         $betsTest = $this->betTestRepository->findBy(array(
-            'bankroll' => $bankroll->getId()
-        ),
-        array('date' => 'DESC')
-    );
+                'bankroll' => $bankroll->getId()
+            ),
+            array('date' => 'DESC')
+        );
 
         return $betsTest;
+    }
+
+    public function getMonths() {
+        $bankroll = $this->getCurrentBankroll();
+        $months = $this->betTestRepository->findMonths($bankroll);
+
+        return $months;
+    }
+
+    public function getBetsTestByMonth($month, $year) {
+        $bankroll = $this->getCurrentBankroll();
+        $betsTest = $this->betTestRepository->findBetsTestByMonth($month, $year, $bankroll);
+
+        return $betsTest;
+    }
+
+    public function getWeeks() {
+        $bankroll = $this->getCurrentBankroll();
+        $weeks = $this->betTestRepository->findWeeks($bankroll);
+
+        return $weeks;
     }
 
     // Récupère les paris gagnant ou perdant de l'utilisateur courant

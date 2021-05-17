@@ -59,7 +59,7 @@ class Bankroll
     private $roc;
 
     /**
-    * @ORM\OneToMany(targetEntity=BetTest::class, cascade={"persist", "remove"}, mappedBy="user")
+    * @ORM\OneToMany(targetEntity=BetTest::class, cascade={"persist", "remove"}, mappedBy="bankroll")
     */
     protected $betstest;
 

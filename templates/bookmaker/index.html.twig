@@ -1,0 +1,134 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BetTestController!{% endblock %}
+
+{% block content %}
+<div class="headline">
+    <h1 class="mt-4">Bookmaker</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Bookmaker</li>
+        </ol>
+
+    <div class="inner">
+        <p>Accès à tous les paris bookmaker.</p>
+    </div>
+</div>
+
+<main>
+    <div class="container-fluid">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table mr-1"></i>
+                    Bookmaker List
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover text-center" width="100%" cellspacing="0">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Name</th>
+                                <th>
+                                    <span class="fa fa-eye" aria-hidden="true"></span> 
+                                </th>
+                                <th>
+                                    <span class="fa fa-edit" aria-hidden="true"></span>           
+                                </th>
+                                <th>
+                                    <span class="fa fa-trash-alt" aria-hidden="true"></span>           
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% if bookmakers is empty %}
+                                <tr>
+                                    <td colspan="8" style="text-align:center;">Aucun résultat</td>
+                                </tr>
+                            {% endif %}
+                            <thead>
+                                <tr class="tr-blue">
+                                    <td colspan="8" style="text-align:left;">Bookmaker Français</td>
+                                </tr>
+                            </thead>
+                            {% for bookmaker in bookmakers %}
+                                {% if bookmaker.outside == 'Non' %}
+                                    <tr>
+                                        <td>{{ bookmaker.name }}</td>
+                                        <td>
+                                            <a href="#">
+                                                <span class="fa fa-eye" aria-hidden="true" style="color:blue;"></span> 
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ path('bookmaker_update', {'id' : bookmaker.id }) }}">
+                                                <span class="fa fa-edit" aria-hidden="true" style="color:grey;"></span>           
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href data-toggle="modal" data-target="#confirmationDeleteModal" data-remove-url="{{ path('bookmaker_delete', {'id' : bookmaker.id }) }}" id="deleteBtn">
+                                                <span class="fa fa-trash-alt" aria-hidden="true" style="color:red;"></span>           
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                            <thead>
+                                <tr class="tr-blue">
+                                    <td colspan="8" style="text-align:left;">Bookmaker Hors France</td>
+                                </tr>
+                            </thead>
+                            {% for bookmaker in bookmakers %}
+                                {% if bookmaker.outside == 'Oui' %}
+                                    <tr>
+                                        <td>{{ bookmaker.name }}</td>
+                                        <td>
+                                            <a href="#">
+                                                <span class="fa fa-eye" aria-hidden="true" style="color:blue;"></span> 
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ path('bookmaker_update', {'id' : bookmaker.id }) }}">
+                                                <span class="fa fa-edit" aria-hidden="true" style="color:grey;"></span>           
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href data-toggle="modal" data-target="#confirmationDeleteModal" data-remove-url="{{ path('bookmaker_delete', {'id' : bookmaker.id }) }}" id="deleteBtn">
+                                                <span class="fa fa-trash-alt" aria-hidden="true" style="color:red;"></span>           
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="text-align:center;">
+                <a href="{{ path('bookmaker_create') }}" class="btn btn-success">
+                    <span class="fa fa-plus" aria-hidden="true"></span>  
+                    Ajouter un bookmaker      
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="confirmationDeleteModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4>Suppression</h4>
+                    <p>Êtes-vous sûr de vouloir supprimer cet élément ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="btnNo" data-dismiss="modal">
+                        <i class="fa fa-ban" aria-hidden="true"></i> Annuler
+                    </button>
+                    <a class="btn w-sm btn-danger remove_item">Supprimer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

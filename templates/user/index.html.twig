@@ -4,62 +4,8 @@
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper { margin: 1em auto; max-width: 100%; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
-    <h1 style="text-align:center">Bonjour {{ user.username }}</h1>
-
-    <table class="table mx-auto table-striped table-hover">
-        <thead>
-            <tr>
-                <td colspan="9"> 
-                    Nombre de bankroll : {{ bankrolls|length }}
-                </td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <th>Bankroll de départ</th>
-                <th>Bankroll actuelle</th>
-                <th>Mises cumulées</th>
-                <th>Bénéfices/Pertes</th>
-                <th>Roi</th>
-                <th>Roc</th>
-                <th>Bankeroll par défaut</th>
-                <th></th>
-            </tr>
-        </thead>
-
-        <tbody>
-            {% for bankroll in bankrolls %}
-                <tr>
-                    <td>
-                        <a href="{{ path('bankroll_current_change', {'id' : bankroll.id}) }}">
-                            {{ bankroll.name }}
-                        </a>
-                    </td>
-                    <td>{{ bankroll.startBankroll }}</td>
-                    <td>{{ bankroll.currentBankroll }}</td>
-                    <td>{{ bankroll.misesCumul }}</td>
-                    <td>{{ bankroll.benefsCumul }}</td>
-                    <td>{{ bankroll.roi }}</td>
-                    <td>{{ bankroll.roc }}</td>
-                    <td>    
-                        {% if bankroll.id == defaultBankroll.id %}
-                            ✅
-                        {% endif %}
-                    </td>
-                    <td></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <div style="text-align:right;">
-        <a href="{{ path('bankroll_create') }}" class="btn btn-success">
-            <span class="fa fa-plus" aria-hidden="true"></span>           
-        </a>
-    </div>
-</div>
 {% endblock %}

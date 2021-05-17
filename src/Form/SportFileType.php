@@ -39,7 +39,7 @@ class SportFileType extends AbstractType
 
     public function getParent()
     {
-        return CountryType::class;
+        return SportType::class;
     }
 
     public function configureOptions(OptionsResolver $resolver)

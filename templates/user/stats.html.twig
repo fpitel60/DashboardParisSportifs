@@ -2,16 +2,142 @@
 
 {% block title %}Hello UserController!{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{% block content %}
+<div class="headline">
+    <h1 class="mt-4">User</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="#">User</a></li>
+            <li class="breadcrumb-item active">Stats</li>
+        </ol>
 
-<div class="example-wrapper">
-    <canvas id="statsWinLoose" width="400" height="100" data-result-count='{{ betsTestResultCount|raw }}'></canvas>
-    <canvas id="statsCountByDate" width="400" height="100" data-dates='{{ dates|raw }}' data-count-win='{{ countWin|raw }}' data-count-loose='{{ countLoose|raw }}'></canvas>
-    <canvas id="statsBenefPerteByDate" width="400" height="100" data-dates='{{ dates|raw }}' data-benef-perte='{{ benefPerte|raw }}'></canvas>
-    <canvas id="statsBankrollByDate" width="400" height="100" data-dates='{{ dates|raw }}' data-bankroll-date='{{ bankrollByDate|raw }}'></canvas> 
+    <div class="inner">
+        <p>Accès à toutes les stats concernant votre bankroll courante.</p>
+    </div>
 </div>
+
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-4 cold-md-4">
+                <div class="card card-stats">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-5">
+                                <div class="icon-big text-center">
+                                    <i class="fa fa-chart-line" style='color:#007bff;'></i>
+                                </div>
+                            </div>
+                            <div class="col-7">
+                                <div class="numbers">
+                                    <p class="card-category">ROI</p>
+                                    <h4 class="card-title">{% if currentBankroll.roi == null %}0{% else %}{{ currentBankroll.roi }} {% endif %}%</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 cold-md-4">
+                <div class="card card-stats">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-5">
+                                <div class="icon-big text-center">
+                                    <i class="fa fa-chart-line" style='color:#007bff;'></i>
+                                </div>
+                            </div>
+                            <div class="col-7">
+                                <div class="numbers">
+                                    <p class="card-category">ROC</p>
+                                    <h4 class="card-title">{% if currentBankroll.roc == null %}0{% else %}{{ currentBankroll.roc }} {% endif %}%</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 cold-md-4">
+                <div class="card card-stats">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-5">
+                                <div class="icon-big text-center">
+                                    <i class="fa fa-wallet" style='color:#ffc107;'></i>
+                                </div>
+                            </div>
+                            <div class="col-7">
+                                <div class="numbers">
+                                    <p class="card-category">Bankroll {{ currentBankroll.name }}</p>
+                                    <h4 class="card-title">{{ currentBankroll.currentBankroll }} €</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-area mr-1"></i>
+                        Evolution de la bankroll
+                    </div>
+                    <div class="card-body"><canvas id="statsBankrollByDate" width="100%" height="30" data-dates='{{ dates|raw }}' data-bankroll-date='{{ bankrollByDate|raw }}'></canvas></div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie mr-1"></i>
+                        Répartition des paris gagnés et perdus
+                    </div>
+                    <div class="card-body"><canvas id="statsWinLoose" width="100%" data-result-count='{{ betsTestResultCount|raw }}'></canvas></div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <p class="col-lg-6 text-center">Paris gagnants : {{ winCount }}</p>
+                            <p class="col-lg-6 text-center">Paris perdants : {{ looseCount }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar mr-1"></i>
+                        Nombre de paris Gagné/Perdu par date
+                    </div>
+                    <div class="card-body"><canvas id="statsCountByDate" width="400" height="100" data-dates='{{ dates|raw }}' data-count-win='{{ countWin|raw }}' data-count-loose='{{ countLoose|raw }}'></canvas></div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar mr-1"></i>
+                        Bénéfices/Pertes par date
+                    </div>
+                    <div class="card-body"><canvas id="statsBenefPerteByDate" width="400" height="100" data-dates='{{ dates|raw }}' data-benef-perte='{{ benefPerte|raw }}'></canvas></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main
 {% endblock %}

@@ -30,6 +30,11 @@ class BetTest
     private $resultBet;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $typeBet;
+
+    /**
      * @ORM\Column(type="float", nullable=true)
      */
     private $cote;
@@ -48,6 +53,21 @@ class BetTest
     * @ORM\ManyToOne(targetEntity=Bankroll::class, inversedBy="betstest")
     */
     protected $bankroll;
+
+    /**
+    * @ORM\ManyToOne(targetEntity=Bookmaker::class, inversedBy="betstest")
+    */
+    protected $bookmaker;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $week;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $year;
 
     /**
     * @ORM\OneToMany(targetEntity=GameTest::class, cascade={"persist", "remove"}, mappedBy="bettest")
@@ -90,6 +110,18 @@ class BetTest
     public function setResultBet(?string $resultBet): self
     {
         $this->resultBet = $resultBet;
+
+        return $this;
+    }
+
+    public function getTypeBet(): ?string
+    {
+        return $this->typeBet;
+    }
+
+    public function setTypeBet(?string $typeBet): self
+    {
+        $this->typeBet = $typeBet;
 
         return $this;
     }
@@ -138,6 +170,42 @@ class BetTest
     public function setBankroll($bankroll)
     {
         $this->bankroll = $bankroll;
+ 
+        return $this;
+    }
+
+    public function getBookmaker()
+    {
+        return $this->bookmaker;
+    }
+ 
+    public function setBookmaker($bookmaker)
+    {
+        $this->bookmaker = $bookmaker;
+ 
+        return $this;
+    }
+
+    public function getWeek()
+    {
+        return $this->week;
+    }
+ 
+    public function setWeek($week)
+    {
+        $this->week = $week;
+ 
+        return $this;
+    }
+
+    public function getYear()
+    {
+        return $this->year;
+    }
+ 
+    public function setYear($year)
+    {
+        $this->year = $year;
  
         return $this;
     }

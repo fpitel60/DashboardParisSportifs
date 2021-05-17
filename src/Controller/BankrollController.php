@@ -31,7 +31,7 @@ class BankrollController extends AbstractController
         $bankrolls = $user->getBankrolls();
         $defaultBankeroll = $user->getDefaultBankroll();
 
-        return $this->render('user/index.html.twig', array(
+        return $this->render('bankroll/index.html.twig', array(
             'user' => $user,
             'bankrolls' => $bankrolls,
             'defaultBankroll' => $defaultBankeroll

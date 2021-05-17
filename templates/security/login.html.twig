@@ -3,40 +3,59 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
+                                    <div class="card-body">
+                                        <form method="post">
+                                            {% if error %}
+                                                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                            {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+                                            {% if app.user %}
+                                                <div class="mb-3">
+                                                    You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+                                                </div>
+                                            {% endif %}
+
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="inputUsername">Username</label>
+                                                <input class="form-control py-4" value="{{ last_username }}" name="username" id="inputUsername" type="text" placeholder="Enter username" required autofocus/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="inputPassword">Password</label>
+                                                <input class="form-control py-4" id="inputPassword" type="password" name="password" placeholder="Enter password" />
+                                            </div>
+                                            {#<div class="form-group">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" />
+                                                    <label class="custom-control-label" for="rememberPasswordCheck">Remember password</label>
+                                                </div>
+                                            </div>#}
+                                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                                            <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                                                <a class="small" href="#">Forgot Password?</a>
+                                                <button class="btn btn-primary" type="submit">
+                                                    Sign in
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <div class="small"><a href="http://127.0.0.1:8000/register">Need an account? Sign up!</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
-    {% endif %}
-
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputUsername">Username</label>
-    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
-        </div>
-    #}
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
+    </div>
 {% endblock %}

@@ -25,6 +25,8 @@ class UserController extends AbstractController
      */
     public function stats(BetTestService $betTestService): Response
     {
+        $currentBankroll = $betTestService->getCurrentBankroll();
+
         // Calcul du nombre total de Win/Loose
         $betsTestWin = $betTestService->getBetsTestWin();
         $betTestLoose = $betTestService->getBetsTestLoose();
@@ -86,6 +88,9 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/stats.html.twig', array(
+            'currentBankroll' => $currentBankroll,
+            'winCount' => count($betsTestWin),
+            'looseCount' => count($betTestLoose),
             'betsTestResultCount' => json_encode($betsTestResultCount),
             'countWin' => json_encode($countWin),
             'countLoose' => json_encode($countLoose),

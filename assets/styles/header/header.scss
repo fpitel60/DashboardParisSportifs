@@ -1,0 +1,39 @@
+.headline {
+    position: relative;
+    height: 400px;
+    color: #fff;
+    text-align: left;
+    background: url('/images/wp8054901.jpg') no-repeat center center;
+    background-size: cover;
+    margin-bottom: 20px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .headline a{
+      display: block;
+  }
+  
+  .inner {
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    z-index: 10;
+    transform: translateX(-50%) translateY(-50%);
+    h1 {
+      margin: 0;
+      font-size: 4em;
+      line-height: 1.2em;
+    }
+    p {
+      margin: 0;
+      font-size: 1.4em;
+      color: #fd7e14;
+      background-color: rgba(0,0,0,0.5);
+    }
+  }
+
+.breadcrumb {
+    background-color: rgba(0,0,0,0.5);
+}

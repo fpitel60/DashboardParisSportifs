@@ -83,6 +83,46 @@ class BetTestRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
+    public function findMonths(Bankroll $bankroll) {
+        $query = $this->findAllVisible();
+
+        $query = $query->select('MONTH(bt.date) AS gbMonth, YEAR(bt.date) AS gbYear')
+        ->where('bt.bankroll = :bankroll')
+        ->setParameter('bankroll', $bankroll->getId())
+        ->groupBy('gbMonth')
+        ->addGroupBy('gbYear')
+        ->orderBy('bt.date', 'DESC');
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function findBetsTestByMonth($month, $year, $bankroll) {
+        $query = $this->findAllVisible();
+
+        $query = $query->select('bt.id, SUBSTRING(bt.date, 1, 10) as dateBets')
+        ->where('bt.bankroll = :bankroll')
+        ->setParameter('bankroll', $bankroll->getId())
+        ->andWhere('SUBSTRING(bt.date, 6, 7) = :month')
+        ->setParameter('month', $month)
+        ->andWhere('SUBSTRING(bt.date, 1, 4) = :year')
+        ->setParameter('year', $year)
+        ->orderBy('bt.date', 'DESC');
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function findWeeks(Bankroll $bankroll) {
+        $query = $this->findAllVisible();
+
+        $query = $query->select('bt.week')
+        ->where('bt.bankroll = :bankroll')
+        ->setParameter('bankroll', $bankroll->getId())
+        ->groupBy('bt.week')
+        ->orderBy('bt.week', 'DESC');
+
+        return $query->getQuery()->getResult();
+    }
+
     public function findAllVisible(): QueryBuilder
     {
         return $this->createQueryBuilder('bt');

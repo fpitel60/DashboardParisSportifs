@@ -2,88 +2,107 @@
 
 {% block title %}Hello CountryController!{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{% block content %}
+<div class="headline">
+    <h1 class="mt-4">Country</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Country</li>
+        </ol>
 
-<div class="example-wrapper">
-    <table class="table mx-auto table-striped table-hover">
-        <thead>
-            <tr>
-                <td colspan="3"> 
-                    Nombre de pays: {{ countries.getTotalItemCount }}
-                </td>
-            </tr>
-            <tr>
-                <th{% if countries.isSorted('c.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(countries, 'Nom', 'c.name') }}</th>
-                <th>Drapeau</th>
-                <th></th>
-            </tr>
-            <tr>
-                <div class="container">
-                    {{ form_start(formSearch) }}
-                    <div class="form-row align-items-end">
-                        <div class="col">
-                            <th>{{ form_row(formSearch.name) }}</th>
-                        </div>
-                        <div class="col">
-                            <th></th>
-                        </div>
-                        <div class="col">
-                            <th>
-                                <div class="form-group">
-                                    <button class="btn btn-primary"><span class="fa fa-search" aria-hidden="true"></span></button>
-
-                                    <a href="{{ path('listeleague') }}" class="btn btn-danger">
-                                        <span class="fa fa-eraser" aria-hidden="true"></span>           
-                                    </a>
-                                </div>
-                            </th>
-                        </div>
-                    </div>
-                    {{ form_end(formSearch) }}
-                </div>
-            </tr>
-        </thead>
-
-        <tbody>
-            {% if countries is empty %}
-                <tr>
-                    <td colspan="3" style="text-align:center;">Aucun résultat</td>
-                </tr>
-            {% endif %}
-            {% for country in countries %}
-                <tr>
-                    <td>{{ country.name }}</td>
-                    <td><img src="https://www.sic-info.org/wp-content/uploads/2014/01/{{ country.countryCode }}.png"/></td>
-                    <td>
-                        <a href="{{ path('updatecountry', {'id' : country.id }) }}" class="btn btn-primary">
-                            <span class="fa fa-edit" aria-hidden="true"></span>            
-                        </a>
-                        <a href="{{ path('deletecountry', {'id' : country.id }) }}" class="btn btn-danger">
-                            <span class="fa fa-remove" aria-hidden="true"></span>           
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <div>
-        {{ knp_pagination_render(countries) }}
-    </div>
-
-    <div style="text-align:right;">
-        <a href="{{ path('createcountry') }}" class="btn btn-success">
-            <span class="fa fa-plus" aria-hidden="true"></span>           
-        </a>
-
-        <a href="{{ path('importcountry') }}" class="btn btn-primary">
-            <span class="fa fa-upload" aria-hidden="true"></span>           
-        </a>
+    <div class="inner">
+        <p>Accès à tous les pays.</p>
     </div>
 </div>
+
+<main>
+    <div class="container-fluid">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table mr-1"></i>
+                    Country List
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover" width="100%" cellspacing="0">
+                        <thead class="thead-dark">
+                            <tr>
+                                <td colspan="3"> 
+                                    Nombre de pays: {{ countries.getTotalItemCount }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th{% if countries.isSorted('c.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(countries, 'Nom', 'c.name') }}</th>
+                                <th>Drapeau</th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <div class="container">
+                                    {{ form_start(formSearch) }}
+                                    <div class="form-row align-items-end">
+                                        <div class="col">
+                                            <th>{{ form_row(formSearch.name) }}</th>
+                                        </div>
+                                        <div class="col">
+                                            <th></th>
+                                        </div>
+                                        <div class="col">
+                                            <th>
+                                                <div class="form-group">
+                                                    <button class="btn btn-primary"><span class="fa fa-search" aria-hidden="true"></span></button>
+
+                                                    <a href="{{ path('listeleague') }}" class="btn btn-danger">
+                                                        <span class="fa fa-eraser" aria-hidden="true"></span>           
+                                                    </a>
+                                                </div>
+                                            </th>
+                                        </div>
+                                    </div>
+                                    {{ form_end(formSearch) }}
+                                </div>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% if countries is empty %}
+                                <tr>
+                                    <td colspan="3" style="text-align:center;">Aucun résultat</td>
+                                </tr>
+                            {% endif %}
+                            {% for country in countries %}
+                                <tr>
+                                    <td>{{ country.name }}</td>
+                                    <td><img src="https://www.sic-info.org/wp-content/uploads/2014/01/{{ country.countryCode }}.png"/></td>
+                                    <td>
+                                        <a href="{{ path('updatecountry', {'id' : country.id }) }}" class="btn btn-primary">
+                                            <span class="fa fa-edit" aria-hidden="true"></span>            
+                                        </a>
+                                        <a href="{{ path('deletecountry', {'id' : country.id }) }}" class="btn btn-danger">
+                                            <span class="fa fa-remove" aria-hidden="true"></span>           
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div>
+                {{ knp_pagination_render(countries) }}
+            </div>
+
+            <div style="text-align:center;">
+                <a href="{{ path('createcountry') }}" class="btn btn-success">
+                    <span class="fa fa-plus" aria-hidden="true"></span>           
+                </a>
+
+                <a href="{{ path('importcountry') }}" class="btn btn-primary">
+                    <span class="fa fa-upload" aria-hidden="true"></span>           
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
 {% endblock %}
 

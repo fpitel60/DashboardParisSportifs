@@ -11,15 +11,89 @@ import './styles/app.scss';
 // start the Stimulus application
 import './bootstrap';
 
+import 'bootstrap/dist/js/bootstrap.bundle';
+
+require('@fortawesome/fontawesome-free/css/all.min.css');
+require('@fortawesome/fontawesome-free/js/all.js');
+
 //import "~bootstrap/scss/bootstrap";
 
 import Chart from 'chart.js';
 
 const $ = require('jquery');
+//import $ from "jquery";
+global.$ = global.jQuery = $;
+
+// Add active state to sidbar nav links
+var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
+$("#layoutSidenav_nav .sb-sidenav a.nav-link").each(function() {
+    if (this.href === path) {
+        $(this).addClass("active");
+    }
+});
+
+// Toggle the side navigation
+$("#sidebarToggle").on("click", function(e) {
+    e.preventDefault();
+    $("body").toggleClass("sb-sidenav-toggled");
+});
+
 
 $(".custom-file-input").on("change", function() {
     var fileName = $(this).val().split("\\").pop();
     $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});
+
+$(document).ready(function () {
+
+    $('#deleteBtn').on('click', function () {
+        var removeUrl = $(this).attr('data-remove-url');
+        $('a.remove_item').attr('href', removeUrl);
+    });
+
+    $(".remove_item").on('click', function () {
+        var removeUrl = $(this).attr('data-remove-url');
+        $.ajax({
+            url: removeUrl,
+            type: 'POST',
+        });
+    });
+});
+
+$(".fa-chevron-circle-down").each(function() {
+    var id = $(this).attr('id');
+    document.getElementById(id).style.display="none";
+});
+
+$(".bets").each(function() {
+    var id = $(this).attr('id');
+    document.getElementById(id).style.display="none";
+});
+
+$(document).on('click', '.hideSpan', function()
+{
+    var id = $(this).attr('id');
+    var lastIndex = id.lastIndexOf("_");
+    var str = id.substring(0, lastIndex);
+
+    if(document.getElementById('list_'+str).style.display=="none")
+    {
+        document.getElementById('list_'+str).style.display="block";
+        document.getElementById(str+'_down').style.display="";
+        document.getElementById(str+'_right').style.display="none";
+
+        $(this).parent().removeClass("text-gray-500 border-transparent");
+        $(this).parent().addClass("text-indigo-700 border-indigo-500");
+    }
+    else
+    {
+        document.getElementById('list_'+str).style.display="none";
+        document.getElementById(str+'_down').style.display="none";
+        document.getElementById(str+'_right').style.display="";
+
+        $(this).parent().addClass("text-gray-500 border-transparent");
+        $(this).parent().removeClass("text-indigo-700 border-indigo-500");
+    }
 });
 
 $(document).ready(function() {
@@ -94,15 +168,11 @@ var myChart1 = new Chart(ctx, {
         datasets: [{
             label: "Gagné/Perdu",
             data: data,
-            backgroundColor: ['rgba(42, 175, 40, 0.5)', "red"]
+            backgroundColor: ['rgba(42, 175, 40, 0.5)', "rgba(255,101,80, 0.5)"]
         }]
     },
     options: {
         responsive : true,
-        title: {
-            display: true,
-            text: 'Répartition des paris gagnés et perdus'
-          }
     }
 }); 
 
@@ -121,21 +191,17 @@ var myChart2 = new Chart(ctx, {
             {
                 label: "Paris gagnants",
                 data: dataCountWin,
-                backgroundColor: "green"
+                backgroundColor: "rgba(42, 175, 40, 0.5)"
             }, {
                 label: "Paris perdus",
                 data: dataCountLoose,
-                backgroundColor: "red"
+                backgroundColor: "rgba(255,101,80, 0.5)"
             }
         ]
     },
     options: {
         responsive : true,
         legend: { display: false },
-        title: {
-            display: true,
-            text: 'Nombre de paris Gagné/Perdu par date'
-        },
         scales: {
             yAxes: [{
                 ticks: {
@@ -156,10 +222,10 @@ var labels=[];
 
 $.each(databenefPerte, function( index,value ) {
   if(value<0){
-  	myColors[index]='red';
+  	myColors[index]='rgba(255,101,80, 0.5)';
     labels[index]='Pertes'
   }else{
-  	myColors[index]='green';
+  	myColors[index]='rgba(42, 175, 40, 0.5)';
     labels[index]='Bénéfices'
   }
 });
@@ -171,9 +237,7 @@ var myChart3 = new Chart(ctx, {
         datasets: [
             {
                 label: labels,
-                borderColor: myColors,
-                borderWidth: 3,
-                fill: false,
+                backgroundColor: myColors,
                 data: databenefPerte
             }
         ]
@@ -181,10 +245,6 @@ var myChart3 = new Chart(ctx, {
     options: {
         responsive : true,
         legend: { display: false },
-        title: {
-            display: true,
-            text: 'Bénéfices/Pertes par date'
-        }
     }
 }); 
 
@@ -200,8 +260,8 @@ var myChart4 = new Chart(ctx, {
         datasets: [
             {
                 label: 'Bankroll',
-                borderColor: 'red',
-                fill: false,
+                backgroundColor: 'rgba(0,0,216,0.19)',
+                fill: true,
                 data: dataBankrollByDate
             }
         ]
@@ -209,9 +269,5 @@ var myChart4 = new Chart(ctx, {
     options: {
         responsive : true,
         legend: { display: false },
-        title: {
-            display: true,
-            text: 'Evolution de la bankroll'
-        }
     }
 }); 

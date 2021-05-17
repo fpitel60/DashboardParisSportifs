@@ -1,0 +1,15 @@
+// Global styling for this template
+
+html,
+body {
+  height: 100%;
+  background-color: lightgrey;
+}
+
+// Set spacing on containers for page symmetry
+
+.container,
+.container-fluid {
+  padding-left: $grid-gutter-width;
+  padding-right: $grid-gutter-width;
+}

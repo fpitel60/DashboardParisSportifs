@@ -1,4 +1,7 @@
 {
+    "beberlei/doctrineextensions": {
+        "version": "v1.3.0"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.1"
     },
@@ -568,6 +571,9 @@
     },
     "twig/extra-bundle": {
         "version": "v3.1.1"
+    },
+    "twig/intl-extra": {
+        "version": "v3.3.0"
     },
     "twig/twig": {
         "version": "v3.1.1"
